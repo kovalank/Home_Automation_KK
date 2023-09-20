@@ -1,6 +1,7 @@
 binary_sensor:
   - platform: mcp23017
     i2c_address: 0x21
+    pull_mode: true
     invert_logic: false
     pins:
       0 : I/P_Switch_1
@@ -13,6 +14,7 @@ binary_sensor:
       8 : I/P_Switch_8
   - platform: mcp23017
     i2c_address: 0x22
+    pull_mode: true
     invert_logic: false
     pins:
       0 : I/P_Switch_9
