@@ -1,0 +1,731 @@
+esphome:
+  name: esphome-web-2c3548
+  friendly_name: HA_K16CH_Dim_PCB
+
+esp32:
+  board: esp32doit-devkit-v1
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "U/qVNMOk7FCCUA+rsaes/f5XTfUezT2Y0jKd5u9m7CE="
+
+ota:
+
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esphome-Web-2C3548"
+    password: "KKVdzojKLfRQ"
+
+captive_portal:
+output:
+# Pin 19: Output for Smoke Buzzer
+  - platform: gpio
+    pin: 14
+    id: Buzzer
+
+# Pin 18: Output for Panel cooling fan
+  - platform: gpio
+    pin: 12
+    id: PanelFan
+
+#Dimmer
+  - platform: ac_dimmer
+    id: dimmer1
+    gate_pin: 5
+    zero_cross_pin:
+      number: 15
+      mode:
+        input: true
+    min_power: 35%
+
+  - platform: ac_dimmer
+    id: dimmer2
+    gate_pin: 18
+    zero_cross_pin:
+      number: 15
+      mode:
+        input: true
+    min_power: 35%
+
+  - platform: ac_dimmer
+    id: dimmer3
+    gate_pin: 19
+    zero_cross_pin:
+      number: 15
+      mode:
+        input: true
+    min_power: 35%
+
+  - platform: ac_dimmer
+    id: dimmer4
+    gate_pin: 23
+    zero_cross_pin:
+      number: 15
+      mode:
+        input: true
+    min_power: 35%
+
+light:
+  - platform: monochromatic
+    output: dimmer1
+    name: Fan-1
+    default_transition_length: 50ms
+
+  - platform: monochromatic
+    output: dimmer2
+    name: Fan-2
+    default_transition_length: 50ms
+
+  - platform: monochromatic
+    output: dimmer3
+    name: Fan-3
+    default_transition_length: 50ms
+
+  - platform: monochromatic
+    output: dimmer4
+    name: Fan-4
+    default_transition_length: 50ms    
+
+  - platform: fastled_clockless
+    chipset: WS2812B
+    pin: 2    # Pin Define connected with LED strip
+    num_leds: 30  #LEDs number
+    rgb_order: GRB
+    name: "RGB_LED_1"
+    effects:
+      - addressable_rainbow:        ##defined 7 effects styles
+      - addressable_color_wipe:
+      - addressable_scan:
+      - addressable_twinkle:
+      - addressable_random_twinkle:
+      - addressable_fireworks:
+      - addressable_flicker:
+
+  - platform: fastled_clockless
+    chipset: WS2812B
+    pin: 4    
+    num_leds: 30  
+    rgb_order: GRB
+    name: "RGB_LED_2"
+    effects:
+      - addressable_rainbow:        
+      - addressable_color_wipe:
+      - addressable_scan:
+      - addressable_twinkle:
+      - addressable_random_twinkle:
+      - addressable_fireworks:
+      - addressable_flicker:
+
+  - platform: fastled_clockless
+    chipset: WS2812B
+    pin: 13    
+    num_leds: 30  
+    rgb_order: GRB
+    name: "RGB_LED_3"
+    effects:
+      - addressable_rainbow:        
+      - addressable_color_wipe:
+      - addressable_scan:
+      - addressable_twinkle:
+      - addressable_random_twinkle:
+      - addressable_fireworks:
+      - addressable_flicker:        
+
+uart:
+    tx_pin: 17
+    rx_pin: 16
+    baud_rate: 9600
+    data_bits: 8
+    stop_bits: 1
+    parity: NONE
+
+modbus:
+  - id: mod_bus_pzem
+    send_wait_time: 250ms
+
+# MCP23017 input/output for port extn.
+i2c:
+  sda: 21
+  scl: 22
+  scan: true
+  id: bus_a
+
+# Example configuration entry
+mcp23017:
+  - id: 'MCP1_IN_OUT'  # for input ch 0-7 output ch 8-15
+    address: 0x21
+
+  - id: 'MCP2_IN_OUT'  # for input ch 0-7 output ch 8-15
+    address: 0x22  
+
+# Individual outputs
+switch:
+  - platform: gpio
+    name: "Relay_K1"
+    id: SK_1
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 8
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K2"
+    id: SK_2
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 9
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K3"
+    id: SK_3
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 10
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K4"
+    id: SK_4
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 11
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K5"
+    id: SK_5
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 12
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K6"
+    id: SK_6
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 13
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K7"
+    id: SK_7
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 14
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K8"
+    id: SK_8
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 15
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K9"
+    id: SK_9
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 8
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K10"
+    id: SK_10
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 9
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K11"
+    id: SK_11
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 10
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K12"
+    id: SK_12
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 11
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K13"
+    id: SK_13
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 12
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K14"
+    id: SK_14
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 13
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K15"
+    id: SK_15
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 14
+      mode:
+        output: true
+      inverted: false
+
+  - platform: gpio
+    name: "Relay_K16"
+    id: SK_16
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 15
+      mode:
+        output: true
+      inverted: false
+
+# Individual inputs
+binary_sensor:
+  - platform: gpio
+    name: "Switch_S1"
+    on_press:
+      then:
+       - switch.turn_on: SK_1
+    on_release:
+      then:
+       - switch.turn_off: SK_1
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 0
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S2"
+    on_press:
+      then:
+       - switch.turn_on: SK_2
+    on_release:
+      then:
+       - switch.turn_off: SK_2
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 1
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S3"
+    on_press:
+      then:
+       - switch.turn_on: SK_3
+    on_release:
+      then:
+       - switch.turn_off: SK_3
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 2
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S4"
+    on_press:
+      then:
+       - switch.turn_on: SK_4
+    on_release:
+      then:
+       - switch.turn_off: SK_4
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 3
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S5"
+    on_press:
+      then:
+       - switch.turn_on: SK_5
+    on_release:
+      then:
+       - switch.turn_off: SK_5
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 4
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S6"
+    on_press:
+      then:
+       - switch.turn_on: SK_6
+    on_release:
+      then:
+       - switch.turn_off: SK_6
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 5
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S7"
+    on_press:
+      then:
+       - switch.turn_on: SK_7
+    on_release:
+      then:
+       - switch.turn_off: SK_7
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 6
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S8"
+    on_press:
+      then:
+       - switch.turn_on: SK_8
+    on_release:
+      then:
+       - switch.turn_off: SK_8
+    pin:
+      mcp23xxx: MCP1_IN_OUT
+      number: 7
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S9"
+    on_press:
+      then:
+       - switch.turn_on: SK_9
+    on_release:
+      then:
+       - switch.turn_off: SK_9
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 0
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S10"
+    on_press:
+      then:
+       - switch.turn_on: SK_10
+    on_release:
+      then:
+       - switch.turn_off: SK_10
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 1
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S11"
+    on_press:
+      then:
+       - switch.turn_on: SK_11
+    on_release:
+      then:
+       - switch.turn_off: SK_11
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 2
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S12"
+    on_press:
+      then:
+       - switch.turn_on: SK_12
+    on_release:
+      then:
+       - switch.turn_off: SK_12
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 3
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S13"
+    on_press:
+      then:
+       - switch.turn_on: SK_13
+    on_release:
+      then:
+       - switch.turn_off: SK_13
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 4
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S14"
+    on_press:
+      then:
+       - switch.turn_on: SK_14
+    on_release:
+      then:
+       - switch.turn_off: SK_14
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 5
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S15"
+    on_press:
+      then:
+       - switch.turn_on: SK_15
+    on_release:
+      then:
+       - switch.turn_off: SK_15
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 6
+      mode:
+        input: true
+        pullup: true
+      inverted: false
+
+  - platform: gpio
+    name: "Switch_S16"
+    on_press:
+      then:
+       - switch.turn_on: SK_16
+    on_release:
+      then:
+       - switch.turn_off: SK_16
+    pin:
+      mcp23xxx: MCP2_IN_OUT
+      number: 7
+      mode:
+        input: true
+        pullup: true
+      inverted: false 
+
+sensor:
+# Room Temperature and Humidity measurement using DHT22 sensor
+  - platform: dht
+    model: DHT22
+    pin: 32
+    temperature:
+      name: "Room-1 Temperature"
+      unit_of_measurement: "°C"
+    humidity:
+      name: "Room-1 Humidity"
+      unit_of_measurement: "%"
+    
+  - platform: dht
+    model: DHT22
+    pin: 33
+    temperature:
+      name: "Room-2 Temperature"
+      unit_of_measurement: "°C"
+    humidity:
+      name: "Room-3 Humidity"
+      unit_of_measurement: "%"
+     
+  - platform: dht
+    model: DHT22
+    pin: 25
+    temperature:
+      name: "Room-3 Temperature"
+      unit_of_measurement: "°C"
+    humidity:
+      name: "Room-3 Humidity"
+      unit_of_measurement: "%"
+  
+  - platform: dht
+    model: DHT22
+    pin: 26
+    temperature:
+      name: "Hall Temperature"
+      unit_of_measurement: "°C"
+    humidity:
+      name: "Hall Humidity"
+      unit_of_measurement: "%"
+    update_interval: 2s
+  
+# Panel Temperature
+  - platform: dht
+    model: DHT22
+    pin: 27
+    temperature:
+      name: "Panel Temperature"
+      unit_of_measurement: "°C"
+      on_value_range:
+        - above: 40.0
+          then:
+            - output.turn_on: PanelFan
+        - below: 39.9
+          then:
+            - output.turn_off: PanelFan
+
+#Smoke Sensors
+  - platform: adc
+    pin: 36
+    name: "Room-1 Smoke"
+    on_value_range:
+        - above: 500.0
+          then:
+            - output.turn_on: Buzzer
+            - delay: 3s
+            - output.turn_off: Buzzer
+        - below: 500.0
+          then:
+            - output.turn_off: Buzzer
+
+  - platform: adc
+    pin: 39
+    name: "Room-2 Smoke"
+    on_value_range:
+        - above: 500.0
+          then:
+            - output.turn_on: Buzzer
+            - delay: 3s
+            - output.turn_off: Buzzer
+        - below: 500.0
+          then:
+            - output.turn_off: Buzzer
+
+  - platform: adc
+    pin: 34
+    name: "Room-3 Smoke"
+    on_value_range:
+        - above: 500.0
+          then:
+            - output.turn_on: Buzzer
+            - delay: 3s
+            - output.turn_off: Buzzer
+        - below: 500.0
+          then:
+            - output.turn_off: Buzzer
+  - platform: adc
+    pin: 35
+    name: "Hall Smoke"
+    on_value_range:
+        - above: 500.0
+          then:
+            - output.turn_on: Buzzer
+            - delay: 3s
+            - output.turn_off: Buzzer
+        - below: 500.0
+          then:
+            - output.turn_off: Buzzer
+
+# Voltage and Current using PZEM004t sensor
+  - platform: pzemac
+    id: pzem_1
+    voltage:
+     name: "R Voltage"
+    current:
+     name: "R Amp"
+    address: 0x10
+    modbus_id: mod_bus_pzem
+    update_interval: 1s
+
+  - platform: pzemac
+    id: pzem_2
+    voltage:
+     name: "Y Voltage"
+    current:
+     name: "Y Amp"
+    address: 0x11
+    modbus_id: mod_bus_pzem
+    update_interval: 1s
+
+  - platform: pzemac
+    id: pzem_3
+    voltage:
+     name: "B Voltage"
+    current:
+     name: "B Amp"
+    address: 0x12
+    modbus_id: mod_bus_pzem
+    update_interval: 1s
