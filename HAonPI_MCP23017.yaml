@@ -1,0 +1,51 @@
+binary_sensor:
+  - platform: mcp23017
+    i2c_address: 0x21
+    invert_logic: false
+    pins:
+      0 : I/P_Switch_1
+      1 : I/P_Switch_2
+      2 : I/P_Switch_3
+      3 : I/P_Switch_4
+      4 : I/P_Switch_5
+      5 : I/P_Switch_6
+      6 : I/P_Switch_7
+      8 : I/P_Switch_8
+  - platform: mcp23017
+    i2c_address: 0x22
+    invert_logic: false
+    pins:
+      0 : I/P_Switch_9
+      1 : I/P_Switch_10
+      2 : I/P_Switch_11
+      3 : I/P_Switch_12
+      4 : I/P_Switch_13
+      5 : I/P_Switch_14
+      6 : I/P_Switch_15
+      8 : I/P_Switch_16
+
+switch:
+  - platform: mcp23017
+    i2c_address: 0x21
+    hw_sync: true
+    pins:
+      7  : O/P_Relay_1
+      9  : O/P_Relay_2
+      10 : O/P_Relay_3
+      11 : O/P_Relay_4
+      12 : O/P_Relay_5
+      13 : O/P_Relay_6
+      14 : O/P_Relay_7
+      15 : O/P_Relay_8
+  - platform: mcp23017
+    i2c_address: 0x22
+    hw_sync: true
+    pins:
+      7  : O/P_Relay_9
+      9  : O/P_Relay_10
+      10 : O/P_Relay_11
+      11 : O/P_Relay_12
+      12 : O/P_Relay_13
+      13 : O/P_Relay_14
+      14 : O/P_Relay_15
+      15 : O/P_Relay_16
